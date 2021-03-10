@@ -1,0 +1,45 @@
+{
+  "name": "evreyn",
+  "version": "1.0.0",
+  "description": "Personal Discord Bot",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "watch": "tsc -p tsconfig.json -w",
+    "test": "mocha -r ts-node/register \"tests/**/*.spec.ts\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/thejayneo/EvReyn.git"
+  },
+  "keywords": [
+    "discord",
+    "bot",
+    "moderation",
+    "admin",
+    "music",
+    "rpg"
+  ],
+  "author": "JN",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/thejayneo/EvReyn/issues"
+  },
+  "homepage": "https://github.com/thejayneo/EvReyn#readme",
+  "dependencies": {
+    "@types/node": "^14.14.33",
+    "discord.js": "^12.5.1",
+    "dotenv": "^8.2.0",
+    "inversify": "^5.0.5",
+    "reflect-metadata": "^0.1.13",
+    "typescript": "^4.2.3"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.2.15",
+    "@types/mocha": "^8.2.1",
+    "chai": "^4.3.3",
+    "mocha": "^8.3.1",
+    "ts-mockito": "^2.6.1",
+    "ts-node": "^9.1.1"
+  }
+}
