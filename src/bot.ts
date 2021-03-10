@@ -1,34 +1,41 @@
 import {Client, Message} from "discord.js";
 import {inject, injectable} from "inversify";
 import {TYPES} from "./types";
-import {MessageResponder} from "./services/message-responder";
+import {CommandRouter} from "./services/CommandRouter/CommandRouter";
 
 @injectable()
 export class Bot {
   private client: Client;
   private readonly token: string;
-  private messageResponder: MessageResponder;
+  private CommandRouter: CommandRouter;
+  private triggerChar: string;
 
   constructor(
     @inject(TYPES.Client) client: Client,
     @inject(TYPES.Token) token: string,
-    @inject(TYPES.MessageResponder) messageResponder: MessageResponder) {
+    @inject(TYPES.CommandRouter) CommandRouter: CommandRouter) {
     this.client = client;
     this.token = token;
-    this.messageResponder = messageResponder;
+    this.CommandRouter = CommandRouter;
+    this.triggerChar = '!';
   }
 
   // Initiate bot listening for messages
   public listen(): Promise<string> {
     this.client.on('message', (message: Message) => {
+      // Ignore messages without command trigger and private messages
+      if (!message.content.startsWith(this.triggerChar) || !message.guild) {
+        return;
+      }
+      // Ignore messages from bots (self & others)
       if (message.author.bot) {
         console.log("Message <Bot: " + message.author.username + ">: Message ignored.")
         return;
       }
       // Log user messages
       console.log("Message <" + message.author.username + "#" + message.author.discriminator + ">:",message.content);
-      // Pass to responder service
-      this.messageResponder.handle(message).then(() => {
+      // Pass to listener service
+      this.CommandRouter.handle(message).then(() => {
         console.log("Response sent!");
       }).catch(() => {
         console.log("Response not sent.")

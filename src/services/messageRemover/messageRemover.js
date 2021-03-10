@@ -12,25 +12,31 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.MessageResponder = void 0;
-const ping_finder_1 = require("./ping-finder");
+exports.MessageRemover = void 0;
 const inversify_1 = require("inversify");
-const types_1 = require("../types");
-let MessageResponder = class MessageResponder {
-    constructor(pingFinder) {
-        this.pingFinder = pingFinder;
+const types_1 = require("../../types");
+const messageSender_1 = require("../messageSender/messageSender");
+let MessageRemover = class MessageRemover {
+    constructor(messageSender) {
+        this.messageSender = messageSender;
     }
-    handle(message) {
-        if (this.pingFinder.isPing(message.content)) {
-            return message.reply('pong!');
+    remove(message, amount, force = null) {
+        if (message.channel.type === 'text') {
+            if (force === 'f' || force === 'F') {
+                message.channel.bulkDelete(amount + 1, true);
+            }
+            else {
+                message.channel.bulkDelete(amount + 1, false);
+            }
         }
-        return Promise.reject();
+        return this.messageSender.reply(message, 'I have cleared ' + amount + ' messages.');
     }
+    ;
 };
-MessageResponder = __decorate([
+MessageRemover = __decorate([
     inversify_1.injectable(),
-    __param(0, inversify_1.inject(types_1.TYPES.PingFinder)),
-    __metadata("design:paramtypes", [ping_finder_1.PingFinder])
-], MessageResponder);
-exports.MessageResponder = MessageResponder;
-//# sourceMappingURL=message-responder.js.map
+    __param(0, inversify_1.inject(types_1.TYPES.MessageSender)),
+    __metadata("design:paramtypes", [messageSender_1.MessageSender])
+], MessageRemover);
+exports.MessageRemover = MessageRemover;
+//# sourceMappingURL=messageRemover.js.map

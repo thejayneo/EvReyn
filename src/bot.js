@@ -16,24 +16,30 @@ exports.Bot = void 0;
 const discord_js_1 = require("discord.js");
 const inversify_1 = require("inversify");
 const types_1 = require("./types");
-const message_responder_1 = require("./services/message-responder");
+const CommandRouter_1 = require("./services/CommandRouter/CommandRouter");
 let Bot = class Bot {
-    constructor(client, token, messageResponder) {
+    constructor(client, token, CommandRouter) {
         this.client = client;
         this.token = token;
-        this.messageResponder = messageResponder;
+        this.CommandRouter = CommandRouter;
+        this.triggerChar = '!';
     }
     // Initiate bot listening for messages
     listen() {
         this.client.on('message', (message) => {
+            // Ignore messages without command trigger and private messages
+            if (!message.content.startsWith(this.triggerChar) || !message.guild) {
+                return;
+            }
+            // Ignore messages from bots (self & others)
             if (message.author.bot) {
                 console.log("Message <Bot: " + message.author.username + ">: Message ignored.");
                 return;
             }
             // Log user messages
             console.log("Message <" + message.author.username + "#" + message.author.discriminator + ">:", message.content);
-            // Pass to responder service
-            this.messageResponder.handle(message).then(() => {
+            // Pass to listener service
+            this.CommandRouter.handle(message).then(() => {
                 console.log("Response sent!");
             }).catch(() => {
                 console.log("Response not sent.");
@@ -46,8 +52,8 @@ Bot = __decorate([
     inversify_1.injectable(),
     __param(0, inversify_1.inject(types_1.TYPES.Client)),
     __param(1, inversify_1.inject(types_1.TYPES.Token)),
-    __param(2, inversify_1.inject(types_1.TYPES.MessageResponder)),
-    __metadata("design:paramtypes", [discord_js_1.Client, String, message_responder_1.MessageResponder])
+    __param(2, inversify_1.inject(types_1.TYPES.CommandRouter)),
+    __metadata("design:paramtypes", [discord_js_1.Client, String, CommandRouter_1.CommandRouter])
 ], Bot);
 exports.Bot = Bot;
 //# sourceMappingURL=bot.js.map
