@@ -10,7 +10,7 @@ exports.MessageSender = void 0;
 const inversify_1 = require("inversify");
 let MessageSender = class MessageSender {
     send(message, messageContent) {
-        message.channel.send(message.author.tag + messageContent);
+        return message.channel.send(message.author.tag + ' ' + messageContent);
     }
     reply(message, messageContent) {
         return message.reply(messageContent);

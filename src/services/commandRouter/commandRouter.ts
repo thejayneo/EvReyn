@@ -26,7 +26,7 @@ export class CommandRouter {
     // Moderator level commands (Need to add moderator role check)
     switch (this.command) {
         case 'clear':
-            return this.messageRemover.remove(message, parseInt(message.content.split(' ')[1]), message.content.split(' ')[2]);
+            return this.messageRemover.remove(message, message.content.split(' ')[1], message.content.split(' ')[2]);
     }
     // General user commands
     switch (this.command) {
