@@ -22,11 +22,21 @@ let MessageRemover = class MessageRemover {
     }
     remove(message, amount, force = null) {
         if (message.channel.type === 'text') {
-            if (force === 'f' || force === 'F') {
-                message.channel.bulkDelete(amount + 1, true);
+            if ((amount === 'all') && !force) {
+                console.log('');
+                return this.messageSender.reply(message, 'you attempted to delete all messages in the channel without force. See help for more details.');
             }
-            else {
-                message.channel.bulkDelete(amount + 1, false);
+            else if ((amount === 'all') && (force === 'f' || force === 'F')) {
+                message.channel.bulkDelete(1000000, true);
+            }
+            else if (typeof (amount) === 'number') {
+                try {
+                    message.channel.bulkDelete(amount + 1, false);
+                }
+                catch (error) {
+                    console.log(error);
+                    return (error);
+                }
             }
         }
         return this.messageSender.reply(message, 'I have cleared ' + amount + ' messages.');
