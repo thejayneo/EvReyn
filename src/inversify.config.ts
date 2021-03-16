@@ -7,6 +7,7 @@ import {CommandRouter} from "./services/commandRouter/commandRouter";
 import {MessageSender} from "./services/messageSender/messageSender";
 import {PingResponder} from "./services/pingResponder/pingResponder";
 import {MessageRemover} from "./services/messageRemover/messageRemover";
+import {ChannelManager} from "./services/channelManager/channelManager";
 
 let container = new Container();
 
@@ -17,5 +18,6 @@ container.bind<CommandRouter>(TYPES.CommandRouter).to(CommandRouter).inSingleton
 container.bind<MessageSender>(TYPES.MessageSender).to(MessageSender).inSingletonScope();
 container.bind<PingResponder>(TYPES.PingResponder).to(PingResponder).inSingletonScope();
 container.bind<MessageRemover>(TYPES.MessageRemover).to(MessageRemover).inSingletonScope();
+container.bind<ChannelManager>(TYPES.ChannelManager).to(ChannelManager).inSingletonScope();
 
 export default container;

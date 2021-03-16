@@ -9,6 +9,7 @@ const commandRouter_1 = require("./services/commandRouter/commandRouter");
 const messageSender_1 = require("./services/messageSender/messageSender");
 const pingResponder_1 = require("./services/pingResponder/pingResponder");
 const messageRemover_1 = require("./services/messageRemover/messageRemover");
+const channelManager_1 = require("./services/channelManager/channelManager");
 let container = new inversify_1.Container();
 container.bind(types_1.TYPES.Bot).to(bot_1.Bot).inSingletonScope();
 container.bind(types_1.TYPES.Client).toConstantValue(new discord_js_1.Client());
@@ -17,5 +18,6 @@ container.bind(types_1.TYPES.CommandRouter).to(commandRouter_1.CommandRouter).in
 container.bind(types_1.TYPES.MessageSender).to(messageSender_1.MessageSender).inSingletonScope();
 container.bind(types_1.TYPES.PingResponder).to(pingResponder_1.PingResponder).inSingletonScope();
 container.bind(types_1.TYPES.MessageRemover).to(messageRemover_1.MessageRemover).inSingletonScope();
+container.bind(types_1.TYPES.ChannelManager).to(channelManager_1.ChannelManager).inSingletonScope();
 exports.default = container;
 //# sourceMappingURL=inversify.config.js.map

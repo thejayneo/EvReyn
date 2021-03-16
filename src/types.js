@@ -8,6 +8,7 @@ exports.TYPES = {
     CommandRouter: Symbol("CommandRouter"),
     MessageSender: Symbol("MessageSender"),
     PingResponder: Symbol("PingResponder"),
-    MessageRemover: Symbol("MessageRemover")
+    MessageRemover: Symbol("MessageRemover"),
+    ChannelManager: Symbol("ChannelManager")
 };
 //# sourceMappingURL=types.js.map
