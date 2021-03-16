@@ -17,21 +17,29 @@ const inversify_1 = require("inversify");
 const types_1 = require("../../types");
 const pingResponder_1 = require("../pingResponder/pingResponder");
 const messageRemover_1 = require("../messageRemover/messageRemover");
+const channelManager_1 = require("../channelManager/channelManager");
 let CommandRouter = class CommandRouter {
-    constructor(pingResponder, messageRemoveer) {
+    constructor(pingResponder, messageRemoveer, channelManager) {
         this.pingResponder = pingResponder;
         this.messageRemover = messageRemoveer;
+        this.channelManager = channelManager;
     }
     handle(message) {
         // Assign command variable to first word in message without triggerchar.
         this.command = message.content.substring(1).split(' ')[0];
         // Switch-Case routing of command messages
-        // Administrator level commands (Need to add admin role check)
-        // Moderator level commands (Need to add moderator role check)
-        switch (this.command) {
-            case 'clear':
-                return this.messageRemover.remove(message, message.content.split(' ')[1], message.content.split(' ')[2]);
+        // Administrator level commands
+        if (message.member.guild.me.hasPermission('ADMINISTRATOR')) {
+            switch (this.command) {
+                case 'something':
+            }
+            // Moderator level commands
         }
+        else if (message.member.guild.me.hasPermission('MANAGE_MESSAGES'))
+            switch (this.command) {
+                case 'clear':
+                    return this.messageRemover.remove(message, message.content.split(' ')[1], message.content.split(' ')[2]);
+            }
         // General user commands
         switch (this.command) {
             case 'ping':
@@ -44,8 +52,10 @@ CommandRouter = __decorate([
     inversify_1.injectable(),
     __param(0, inversify_1.inject(types_1.TYPES.PingResponder)),
     __param(1, inversify_1.inject(types_1.TYPES.MessageRemover)),
+    __param(2, inversify_1.inject(types_1.TYPES.ChannelManager)),
     __metadata("design:paramtypes", [pingResponder_1.PingResponder,
-        messageRemover_1.MessageRemover])
+        messageRemover_1.MessageRemover,
+        channelManager_1.ChannelManager])
 ], CommandRouter);
 exports.CommandRouter = CommandRouter;
 //# sourceMappingURL=CommandRouter.js.map
