@@ -16,9 +16,11 @@ exports.MessageRemover = void 0;
 const inversify_1 = require("inversify");
 const types_1 = require("../../types");
 const messageSender_1 = require("../messageSender/messageSender");
+const channelManager_1 = require("../channelManager/channelManager");
 let MessageRemover = class MessageRemover {
-    constructor(messageSender) {
+    constructor(messageSender, channelManager) {
         this.messageSender = messageSender;
+        this.channelManager = channelManager;
     }
     remove(message, amount, force = null) {
         const amountAsNumber = parseInt(amount);
@@ -51,17 +53,9 @@ let MessageRemover = class MessageRemover {
                 // Loop delete for > 1000 potentially resource intensive. Clone channel, delete old channel, rename clone to name of old channel and post completion message in new channel.
             }
             else if ((amount === 'all') && (force === 'f' || force === 'F')) {
-                message.channel.clone({
-                    name: message.channel.name,
-                    permissionOverwrites: message.channel.permissionOverwrites,
-                    type: 'text',
-                    topic: message.channel.topic,
-                    nsfw: message.channel.nsfw
-                }).then(clone => {
-                    clone.send('Channel cleared/cloned.');
-                });
-                message.channel.delete();
-                return this.messageSender.reply(message, 'soemthing');
+                this.channelManager.clone(message);
+                this.channelManager.delete(message);
+                return this.messageSender.reply(message, 'Channel cleared.');
             }
             else {
                 return this.messageSender.send(message, "Sorry that is not a valid command.");
@@ -74,7 +68,9 @@ let MessageRemover = class MessageRemover {
 MessageRemover = __decorate([
     inversify_1.injectable(),
     __param(0, inversify_1.inject(types_1.TYPES.MessageSender)),
-    __metadata("design:paramtypes", [messageSender_1.MessageSender])
+    __param(1, inversify_1.inject(types_1.TYPES.ChannelManager)),
+    __metadata("design:paramtypes", [messageSender_1.MessageSender,
+        channelManager_1.ChannelManager])
 ], MessageRemover);
 exports.MessageRemover = MessageRemover;
 //# sourceMappingURL=messageRemover.js.map
