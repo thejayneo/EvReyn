@@ -35,7 +35,16 @@ export class ChannelManager {
         return
     };
 
-    clone(): Promise<Message> {
+    clone(message: Message): Promise<Message> {
+        if (message.channel.type != 'dm') {
+            message.channel.clone({
+                name: message.channel.name,
+                permissionOverwrites: message.channel.permissionOverwrites,
+                type: message.channel.type,
+                topic: message.channel.topic,
+                nsfw: message.channel.nsfw
+            }).then()
+        }
         return 
-    };
+    }
 }

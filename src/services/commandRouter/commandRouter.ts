@@ -31,7 +31,10 @@ export class CommandRouter {
     // Administrator level commands
     if (message.member.guild.me.hasPermission('ADMINISTRATOR')) {
       switch (this.command) {
-        case 'something':
+        case 'create':
+          return this.channelManager.create(message,??,??,???)
+        case 'clone':
+          return this.channelManager.clone(message)
       }
 
     // Moderator level commands
