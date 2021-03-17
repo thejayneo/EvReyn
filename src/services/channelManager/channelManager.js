@@ -25,7 +25,8 @@ let ChannelManager = class ChannelManager {
             message.guild.channels.create(name, {
                 type: channelType,
                 nsfw: nsfwStatus,
-                permissionOverwrites: message.channel.permissionOverwrites
+                permissionOverwrites: message.channel.permissionOverwrites,
+                parent: message.channel.parent
             });
             // This else block is inaccessible as bot only listens to guild text channels but is needed for permissionOverwrites.
         }
@@ -36,13 +37,22 @@ let ChannelManager = class ChannelManager {
     }
     ;
     delete(message) {
-        return;
+        message.channel.delete();
+        return this.messageSender.send(message, 'channel deleted.');
     }
     ;
-    clone() {
-        return;
+    clone(message) {
+        if (message.channel.type != 'dm') {
+            message.channel.clone({
+                name: message.channel.name,
+                permissionOverwrites: message.channel.permissionOverwrites,
+                type: message.channel.type,
+                topic: message.channel.topic,
+                nsfw: message.channel.nsfw
+            });
+            return this.messageSender.reply(message, 'channel cloned.');
+        }
     }
-    ;
 };
 ChannelManager = __decorate([
     inversify_1.injectable(),

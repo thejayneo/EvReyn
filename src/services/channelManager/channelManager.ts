@@ -21,7 +21,8 @@ export class ChannelManager {
                     name, {
                         type: channelType,
                         nsfw: nsfwStatus,
-                        permissionOverwrites: message.channel.permissionOverwrites
+                        permissionOverwrites: message.channel.permissionOverwrites,
+                        parent: message.channel.parent
                     }
                 )
         // This else block is inaccessible as bot only listens to guild text channels but is needed for permissionOverwrites.
@@ -32,7 +33,8 @@ export class ChannelManager {
     };
 
     delete(message: Message): Promise<Message> {
-        return
+        message.channel.delete();
+        return this.messageSender.send(message, 'channel deleted.')
     };
 
     clone(message: Message): Promise<Message> {
@@ -43,8 +45,8 @@ export class ChannelManager {
                 type: message.channel.type,
                 topic: message.channel.topic,
                 nsfw: message.channel.nsfw
-            }).then()
+            });
+            return this.messageSender.reply(message, 'channel cloned.')
         }
-        return 
     }
 }
