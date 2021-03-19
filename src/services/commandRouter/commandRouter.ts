@@ -45,7 +45,7 @@ export class CommandRouter {
     } else if (message.member.guild.me.hasPermission('MANAGE_MESSAGES'))
     switch (this.command) {
         case 'clear':
-            return this.messageRemover.remove(message, message.content.split(' ')[1], message.content.split(' ')[2]);
+            return this.messageRemover.remove(message, this.contents[1], this.contents[2]);
     }
 
     // General user commands
