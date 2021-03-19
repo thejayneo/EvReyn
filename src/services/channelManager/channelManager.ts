@@ -1,4 +1,4 @@
-import {Channel, Client, Guild, GuildChannel, GuildCreateChannelOptions, Message, TextChannel} from 'discord.js';
+import { Message } from 'discord.js';
 import {inject, injectable} from 'inversify';
 import {TYPES} from '../../types';
 import { MessageSender } from '../messageSender/messageSender';
@@ -37,12 +37,12 @@ export class ChannelManager {
         return this.messageSender.send(message, 'channel deleted.')
     };
 
-    clone(message: Message): Promise<Message> {
-        if (message.channel.type != 'dm') {
+    clone(message: Message, ): Promise<Message> {
+        if (message.channel.type === 'text') {
             message.channel.clone({
                 name: message.channel.name,
                 permissionOverwrites: message.channel.permissionOverwrites,
-                type: message.channel.type,
+                type: 'text',
                 topic: message.channel.topic,
                 nsfw: message.channel.nsfw
             });
