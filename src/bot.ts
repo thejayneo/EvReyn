@@ -1,7 +1,7 @@
 import {Client, Message} from "discord.js";
 import {inject, injectable} from "inversify";
 import {TYPES} from "./types";
-import {CommandRouter} from "./services/CommandRouter/CommandRouter";
+import {CommandRouter} from "./services/commandRouter/CommandRouter";
 
 @injectable()
 export class Bot {
